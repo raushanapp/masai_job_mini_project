@@ -1,23 +1,43 @@
 import { Button, Flex, Select } from '@chakra-ui/react';
-import React from 'react'
+import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import MasaiJobCard from '../Components/MasaiJobCard';
-import { masaiJobCardApiCall } from '../ReduxJobCard/action'
+import { filterJobApiCall, masaiJobCardApiCall } from '../ReduxJobCard/action'
 
 function Home() {
+  const [filter, setFilter] = useState();
   const dispatch = useDispatch();
-
   const job = useSelector((state) =>state.job);
 
   useEffect(() => {
     if (job?.length === 0) {
-      dispatch(masaiJobCardApiCall())
+      dispatch(masaiJobCardApiCall());
     }
+    setFilter(job);
     
-  },[])
+  }, [job?.length]);
 
-  console.log(job)
+  const filterByRole = (e) => {
+    const filter = e.target.value;
+    if (filter==="Frontend" || filter==="FullStack") {
+      console.log(filter)
+      dispatch(filterJobApiCall(filter));
+      // setFilter(job)
+    }
+    else if(filter==="Backend") {
+        setFilter("")
+    }
+    else {
+      setFilter("")
+      if (filter === null) {
+        setFilter(job)
+      }
+    }
+   
+  }
+
+  // console.log(job)
   return (
     <>
       <Select placeholder='Filter By Role'
@@ -28,7 +48,7 @@ function Home() {
         marginLeft='100px'
         marginTop='20px'
         fontSize='18px'
-        // onChange={filterRole}
+        onChange={filterByRole}
 
       >
           <option value="Frontend">Fronted</option>
@@ -48,7 +68,7 @@ function Home() {
         p='20px'
         marginTop='50px'
       >
-        {job?.length > 0 && job.map((el,index) => (
+        {filter?.length > 0 && filter.map((el,index) => (
           <MasaiJobCard key={index} data={ el} />
       ))}
       </Flex>
