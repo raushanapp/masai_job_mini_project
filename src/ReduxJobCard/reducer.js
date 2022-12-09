@@ -16,7 +16,7 @@ export const reducer = (state = initialState, { type, payload }) => {
             }
         }
         case MASAI_JOB_SUCCESS: {
-            console.log("payload",payload)
+            // console.log("payload",payload)
             return {
                 isLoading: false,
                 isError: false,
