@@ -19,7 +19,7 @@ function Home() {
     
     setFilter(job);
     
-  }, [job?.length]);
+  }, [job?.length,page]);
 
   const filterByRole = (e) => {
     const filter = e.target.value;
